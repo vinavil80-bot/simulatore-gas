@@ -1,0 +1,19 @@
+name: Monitor simulatore
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check simulator
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}\n" https://script.google.com/macros/s/AKfycbxVDJxTeZaftjVzJrkIPqiD4ntHB0P5pA_wvUF2j3HNzccUXKTLpFmQe4AFBmVhGLp9/exec)
+
+          if [ "$STATUS" != "200" ]; then
+            echo "SIMULATORE DOWN"
+            exit 1
+          fi
